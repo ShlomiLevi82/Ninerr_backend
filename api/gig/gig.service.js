@@ -83,6 +83,10 @@ function _buildCriteria(filterBy) {
     criteria.daysToMake = { $lte: parseInt(filterBy.delivery) }
   }
 
+  if (filterBy.id) {
+    criteria['owner._id'] = filterBy.id
+  }
+  
   return criteria
 }
 

@@ -9,6 +9,7 @@ export async function getGigs(req, res) {
       minPrice: req.query.minPrice || 0,
       maxPrice: req.query.maxPrice || 1000000,
       delivery: req.query.delivery || 0,
+      id: req.query.id || '',
     }
     logger.debug('Getting Gigs', filterBy)
     // const queryParams = req.query
