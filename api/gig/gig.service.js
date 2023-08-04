@@ -66,6 +66,7 @@ async function update(gig) {
 
 function _buildCriteria(filterBy) {
   let criteria = {}
+  let minMaxPrice = []
 
   if (filterBy.txt) {
     const txtCriteria = { $regex: txt, $options: 'i' }
@@ -81,10 +82,6 @@ function _buildCriteria(filterBy) {
 
   if (filterBy.delivery) {
     criteria.daysToMake = { $lte: parseInt(filterBy.delivery) }
-  }
-
-  if (filterBy.id) {
-    criteria['owner._id'] = filterBy.id
   }
 
   if (filterBy.id) {

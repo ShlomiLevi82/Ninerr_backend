@@ -12,7 +12,6 @@ export async function getGigs(req, res) {
       id: req.query.id || '',
     }
 
-    // const queryParams = req.query
     const gigs = await gigService.query(filterBy)
 
     res.json(gigs)
