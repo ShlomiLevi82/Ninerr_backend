@@ -1,5 +1,8 @@
+import dotenv from 'dotenv'
+
+dotenv.config()
+
 export default {
-  dbURL:
-    'mongodb+srv://theUser:thePass@cluster0-klgzh.mongodb.net/test?retryWrites=true&w=majority',
-  dbName: 'gig_db',
+  dbURL: process.env.dbURL,
+  dbName: process.env.dbName,
 }
