@@ -87,6 +87,10 @@ function _buildCriteria(filterBy) {
     criteria['owner._id'] = filterBy.id
   }
 
+  if (filterBy.id) {
+    criteria['owner._id'] = filterBy.id
+  }
+
   return criteria
 }
 
