@@ -6,7 +6,6 @@ const { ObjectId } = mongodb
 async function query(filterBy) {
   try {
     const criteria = _buildCriteria(filterBy)
-    console.log('🚀 ~ file: gig.service.js:10 ~ query ~ criteria:', criteria)
     const collection = await dbService.getCollection('gig')
     let gigs = await collection.find(criteria).toArray()
     return gigs
@@ -39,12 +38,9 @@ async function remove(gigId) {
 }
 
 async function add(gig) {
-  console.log('🚀 ~ file: gig.service.js:42 ~ add ~ gig:', gig)
   try {
     const collection = await dbService.getCollection('gig')
-    console.log('🚀 ~ file: gig.service.js:45 ~ add ~ collection:', collection)
     const addedGig = await collection.insertOne(gig)
-    console.log('🚀 ~ file: gig.service.js:47 ~ add ~ addedGig:', addedGig)
     return addedGig
   } catch (err) {
     logger.error('cannot insert gig', err)
