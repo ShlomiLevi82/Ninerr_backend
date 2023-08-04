@@ -7,6 +7,7 @@ async function query(filterBy) {
   try {
     const criteria = _buildCriteria(filterBy)
     const collection = await dbService.getCollection('gig')
+
     let gigs = await collection.find(criteria).toArray()
     return gigs
   } catch (err) {
@@ -65,7 +66,6 @@ async function update(gig) {
 
 function _buildCriteria(filterBy) {
   let criteria = {}
-  let minMaxPrice = [parseInt(filterBy.minPrice), parseInt(filterBy.maxPrice)]
 
   if (filterBy.txt) {
     const txtCriteria = { $regex: txt, $options: 'i' }
@@ -81,6 +81,10 @@ function _buildCriteria(filterBy) {
 
   if (filterBy.delivery) {
     criteria.daysToMake = { $lte: parseInt(filterBy.delivery) }
+  }
+
+  if (filterBy.id) {
+    criteria['owner._id'] = filterBy.id
   }
 
   return criteria

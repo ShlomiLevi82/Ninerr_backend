@@ -9,11 +9,14 @@ export async function getGigs(req, res) {
       minPrice: req.query.minPrice || 0,
       maxPrice: req.query.maxPrice || 1000000,
       delivery: req.query.delivery || 0,
+      id: req.query.id || '',
     }
-    logger.debug('Getting Gigs', filterBy)
+
     // const queryParams = req.query
     const gigs = await gigService.query(filterBy)
+
     res.json(gigs)
+    logger.debug('Getting Gigs', filterBy)
   } catch (err) {
     logger.error('Failed to get gigs', err)
     res.status(500).send({ err: 'Failed to get gigs' })
