@@ -41,6 +41,7 @@ export async function addOrder(req, res) {
         order.gigTitle = req.body.gigTitle
         order.price = req.body.price
         order.status = req.body.status
+        order.imgUrl = req.body.imgUrl
 
         console.log("🚀 ~ file: order.controller.js:46 ~ addOrder ~ order:", order)
         order = await orderService.add(order)

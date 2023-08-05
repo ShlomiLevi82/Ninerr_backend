@@ -47,6 +47,7 @@ async function add(order) {
             gigTitle: order.gigTitle,
             price: order.price,
             status: order.status,
+            imgUrl: order.imgUrl
         }
         const collection = await dbService.getCollection('order')
         await collection.insertOne(orderToAdd)
@@ -62,6 +63,9 @@ function _buildCriteria(filterBy) {
     const criteria = {}
     if (filterBy.buyerId) {
         criteria['buyerId'] = filterBy.buyerId
+    }
+    if (filterBy.sellerId) {
+        criteria['sellerId'] = filterBy.sellerId
     }
     return criteria
 }
