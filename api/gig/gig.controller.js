@@ -5,6 +5,7 @@ import { logger } from '../../services/logger.service.js'
 export async function getGigs(req, res) {
   try {
     let filterBy = {
+      category: req.query.category || '',
       txt: req.query.searchText || '',
       minPrice: req.query.minPrice || 0,
       maxPrice: req.query.maxPrice || 1000000,

@@ -1,22 +1,14 @@
-const express = require('express')
-const { requireAuth } = require('../../middlewares/requireAuth.middleware')
-const { log } = require('../../middlewares/logger.middleware')
-const {
-  getOrders,
-  getOrderById,
-  addOrder,
-  updateOrder,
-  removeOrder,
-} = require('./order.controller')
+import express from 'express'
+import { requireAuth } from '../../middlewares/requireAuth.middleware.js'
+import { log } from '../../middlewares/logger.middleware.js'
+
+import {addOrder, getOrders, deleteOrder, updateOrder} from './order.controller.js'
 const router = express.Router()
 
-// middleware that is specific to this router
-// router.use(requireAuth)
-
 router.get('/', log, getOrders)
-router.get('/:id', getOrderById)
-router.post('/', requireAuth, addOrder)
-router.put('/:id', requireAuth, updateOrder)
-router.delete('/:id', requireAuth, removeOrder)
+router.post('/',  log, requireAuth, addOrder)
+router.delete('/:id',  requireAuth, deleteOrder)
+router.put('/:id', updateOrder)
 
-module.exports = router
+
+export const orderRoutes = router
