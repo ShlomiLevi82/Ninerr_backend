@@ -13,7 +13,6 @@ export async function getGigs(req, res) {
     }
 
     const gigs = await gigService.query(filterBy)
-
     res.json(gigs)
     logger.debug('Getting Gigs', filterBy)
   } catch (err) {
