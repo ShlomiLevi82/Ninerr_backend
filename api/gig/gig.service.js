@@ -4,7 +4,6 @@ import mongodb from 'mongodb'
 const { ObjectId } = mongodb
 
 async function query(filterBy) {
-  console.log("🚀 ~ file: gig.service.js:7 ~ query ~ filterBy:", filterBy)
   try {
     const criteria = _buildCriteria(filterBy)
     const collection = await dbService.getCollection('gig')
