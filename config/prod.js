@@ -1,8 +1,13 @@
-import dotenv from 'dotenv'
+// import dotenv from 'dotenv'
 
-dotenv.config()
+// dotenv.config()
+
+// export default {
+//   dbURL: "mongodb+srv://test:123@gigdb.wnipfyp.mongodb.net/",
+//   dbName: "gig_db"
+// }
 
 export default {
-  dbURL: process.env.dbURL,
-  dbName: process.env.dbName,
+  dbURL: `mongodb+srv://test:123@gigdb.wnipfyp.mongodb.net/`,
+  dbName: 'gig_db',
 }
