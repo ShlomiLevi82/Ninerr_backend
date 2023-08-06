@@ -45,13 +45,13 @@ async function getById(userId) {
       delete review.byUser
       return review
     })
-
     return user
   } catch (err) {
     logger.error(`while finding user by id: ${userId}`, err)
     throw err
   }
 }
+
 async function getByUsername(username) {
   try {
     const collection = await dbService.getCollection('user')
