@@ -42,44 +42,15 @@ export async function addOrder(req, res) {
     order.status = req.body.status
     order.imgUrl = req.body.imgUrl
 
-    order = await orderService.add(order)
+    const addedOrder = await orderService.add(order)
 
-    // prepare the updated order for sending out
-    order.aboutUser = await userService.getById(order.aboutUserId)
+    // socketService.emitToUser({
+    //   type: 'gig-ordered',
+    //   data: order,
+    //   userId: order.sellerId,
+    // })
 
-    // Give the user credit for adding an order
-    // var user = await userService.getById(order.byUserId)
-    // user.score += 3
-
-    loggedinUser = await userService.update(loggedinUser)
-    order.byUser = loggedinUser
-
-    // User info is saved also in the login-token, update it
-    const loginToken = authService.getLoginToken(loggedinUser)
-    res.cookie('loginToken', loginToken)
-
-    delete order.aboutUserId
-    delete order.byUserId
-
-    socketService.broadcast({
-      type: 'order-added',
-      data: order,
-      userId: loggedinUser._id,
-    })
-    socketService.emitToUser({
-      type: 'order-about-you',
-      data: order,
-      userId: order.aboutUser._id,
-    })
-
-    const fullUser = await userService.getById(loggedinUser._id)
-    socketService.emitTo({
-      type: 'user-updated',
-      data: fullUser,
-      label: fullUser._id,
-    })
-
-    res.send(order)
+    res.send(addedOrder)
   } catch (err) {
     logger.error('Failed to add order', err)
     res.status(400).send({ err: 'Failed to add order' })

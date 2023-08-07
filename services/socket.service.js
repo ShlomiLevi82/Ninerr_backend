@@ -17,13 +17,13 @@ export function setupSocketAPI(http) {
   gIo.on('connection', (socket) => {
     logger.info(`New connected socket [id: ${socket.id}]`)
 
-    socket.on('set-user-socket', (user) => {
+    socket.on('set-user-socket', (userId) => {
       logger.info(
-        `Setting socket.userId = ${user._id} for socket [id: ${socket.id}]`,
-        `Setting socket.username = ${user.username} for socket [id: ${socket.id}]`
+        `Setting socket.userId = ${userId} for socket [id: ${socket.id}]`
+        // `Setting socket.username = ${user.username} for socket [id: ${socket.id}]`
       )
-      socket.userId = user._id
-      socket.username = user.username
+      socket.userId = userId
+      // socket.username = user.username
       return
     })
 
@@ -91,26 +91,30 @@ export function setupSocketAPI(http) {
       return
     })
 
-    socket.on('gig-ordered', async (gig) => {
-      logger.info(
-        `ordered gig by socket [id: ${socket.id}], from user ${gig.owner.username}`
-      )
-      socket.join('watching:' + gig.owner.username)
-      socket.emit(
-        'order-approved',
-        `Hey ${socket.username}! \nYour order is being processed. stay tuned.`
-      )
+    socket.on('gig-ordered', (order) => {
+      console.log('order', order)
+      // logger.info(
+      //   `ordered gig by socket [id: ${socket.id}], from user ${gig.owner.username}`
+      // )
+      // socket.join('watching:' + gig.owner.username)
+      // socket.emit(
+      //   'order-approved',
+      //   `Hey ${socket.username}! \nYour order is being processed. stay tuned.`
+      // )
 
-      const toSocket = await _getUserSocket(gig.owner._id)
-      if (toSocket)
-        toSocket.emit(
-          'user-ordered-gig',
-          `Hey ${gig.owner.username}! \nA user has just ordered one of your gigs right now.`
-        )
+      // toSocket.emit(
+      //   'user-ordered-gig',
+      //   `Hey ${gig.owner.username}! \nA user has just ordered one of your gigs right now.`
+      // )
+      emitToUser({
+        type: 'user-ordered-gig',
+        data: order,
+        userId: order.sellerId,
+      })
       return
     })
 
-    socket.on('order-change-status', async (order) => {
+    socket.on('order-change-status', (order) => {
       console.log(
         '🚀 ~ file: socket.service.js:127 ~ socket.on ~ order:',
         order
@@ -118,15 +122,19 @@ export function setupSocketAPI(http) {
       logger.info(
         `Change order's status by socket [id: ${socket.id}], for buyer: ${order.buyerName}, id: ${order.buyerId}, on order ${order._id}.`
       )
-      socket.join('watching:' + order.buyerName)
-
+      // socket.join('watching:' + order.buyerName)
+      const { buyerId, _id, status } = order
       // const toSocket = await _getUserSocket(order.buyerId)
-
-      if (socket)
-        socket.emit(
-          'order-status-update',
-          `Hey ${order.buyerName}! \nYour order's status has been changed.`
-        )
+      emitToUser({
+        type: 'order-status-update',
+        data: { _id, status },
+        userId: buyerId,
+      })
+      // if (socket)
+      // socket.emit(
+      //   'order-status-update',
+      //   `Hey ${order.buyerName}! \nYour order's status has been changed.`
+      // )
       return
     })
 
