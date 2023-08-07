@@ -116,17 +116,17 @@ export function setupSocketAPI(http) {
         order
       )
       logger.info(
-        `Change order's status by socket [id: ${socket.id}], for buyer ${order.buyerName}, id: ${order.buyerId}. on order ${order._id}.`
+        `Change order's status by socket [id: ${socket.id}], for buyer: ${order.buyerName}, id: ${order.buyerId}, on order ${order._id}.`
       )
       socket.join('watching:' + order.buyerName)
 
-      const toSocket = await _getUserSocket(order._id)
-      if (toSocket)
-        toSocket.emit(
+      // const toSocket = await _getUserSocket(order.buyerId)
+
+      if (socket)
+        socket.emit(
           'order-status-update',
           `Hey ${order.buyerName}! \nYour order's status has been changed.`
         )
-
       return
     })
 
@@ -182,6 +182,10 @@ async function broadcast({ type, data, room = null, userId }) {
 }
 
 async function _getUserSocket(userId) {
+  console.log(
+    '🚀 ~ file: socket.service.js:188 ~ _getUserSocket ~ userId:',
+    userId
+  )
   const sockets = await _getAllSockets()
   const socket = sockets.find((s) => s.userId === userId)
   return socket

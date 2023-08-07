@@ -73,6 +73,7 @@ export const orderService = {
 }
 
 async function update(order) {
+  console.log('🚀 ~ file: order.service.js:76 ~ update ~ order:', order)
   try {
     let id = ObjectId(order._id)
     let temp = order._id

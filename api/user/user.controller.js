@@ -5,6 +5,7 @@ import { socketService } from '../../services/socket.service.js'
 export async function getUser(req, res) {
   try {
     const user = await userService.getById(req.params.id)
+    console.log('🚀 ~ file: user.controller.js:8 ~ getUser ~ user:', user)
     res.send(user)
   } catch (err) {
     logger.error('Failed to get user', err)
