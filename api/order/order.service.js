@@ -8,8 +8,24 @@ async function query(filterBy = {}) {
   try {
     const criteria = _buildCriteria(filterBy)
     const collection = await dbService.getCollection('order')
-    const orders = await collection.find(criteria).toArray()
+    // const orders = await collection.find(criteria).toArray()
+    const pipeline = [
+      {
+        $match: criteria
+      },
+      {
+        $addFields: {
+          timestamp: { $toDate: '$_id' }
+        }
+      },
+      {
+        $sort: {
+          timestamp: -1
+        }
+      }
+    ]
 
+    const orders = await collection.aggregate(pipeline).toArray();
     return orders
   } catch (err) {
     logger.error('cannot find orders', err)
